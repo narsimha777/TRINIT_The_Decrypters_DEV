@@ -8,5 +8,8 @@ const studentSchema=new Schema({
     languages: [{
         name: { type: String },
         fluency_rate: { type: String }
-    }]
+    }],
+    courses_taken:[{type:mongoose.Schema.ObjectId,ref:"course"}],
 })
+const studentModel=mongoose.model('tutor',studentSchema);
+module.exports=studentModel;
