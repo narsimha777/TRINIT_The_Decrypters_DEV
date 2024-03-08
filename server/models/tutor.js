@@ -2,8 +2,28 @@ const {Schema}=require("mongoose");
 const mongoose=require("mongoose");
 
 const tutorSchema= new Schema({
-    userId:{type:mongoose.Schema.ObjectId,ref:"user"},
-    age:{type:Number,required:true},
+    username:{
+        type: String,
+        unique:true,
+        required: true,
+      },
+      password:{
+        type: String,
+        required: true,
+      },
+      email:{
+        type: String,
+        unique: true,
+        required:true
+      },
+      languages: [{
+        name: { type: String }
+    }],
+    role:{
+        type:String,
+        enum:["student","tutor"]
+    },
+    age:{type:Number},
     experience:{type:Number,required:true},
     courses_taking:[{type:mongoose.Schema.ObjectId,ref:"course"}],
     rating:{type:Number,default:0},
