@@ -7,9 +7,9 @@ import Signup from './screens/Signup'
 const App = () => {
   return (
     <Routes>
-      <Route path='home' Component={<Home/>}/>
-      <Route path='login' Component={<Login/>}/>
-      <Route path='signup' Component={<Signup/>}/>
+      <Route path='/' element={<Home/>}/>
+      <Route path='/login' element={<Login/>}/>
+      <Route path='/signup' element={<Signup/>}/>
     </Routes>
   )
 }
