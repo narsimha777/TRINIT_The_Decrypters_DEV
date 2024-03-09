@@ -1,6 +1,7 @@
 const ROUTES ={
     signup: ()=>"/signup",
-    login:()=>'/login'
+    login:()=>'/login',
+    student:()=>'/signup/student'
 }
 
 export default ROUTES;

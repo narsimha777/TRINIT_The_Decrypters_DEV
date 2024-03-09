@@ -1,25 +1,32 @@
-import { RadioGroup } from '@headlessui/react'
-import ReactStars from "react-rating-stars-component";
 import React, { useEffect } from 'react'
 import { Listbox, Transition } from '@headlessui/react'
 import { CheckIcon, ChevronUpDownIcon } from '@heroicons/react/20/solid'
+import ReactStars from "react-rating-stars-component";
 import { Fragment, useState } from 'react'
 import lang from '../constants/languages'
-
 const Signupstudent = () => {
+
+    const ratingChanged = (newRating) => {
+        // console.log(newRating);
+        setNumber(newRating);
+    };
+    const handleStars=()=>{
+        const user = selected; data.pop(selected); 
+        setData((prev)=>[...prev, {...user, 'rating':number}]);
+        console.log(data)
+    }
+    
     const [ selected, setSelected ] = useState();
     const [data, setData] = useState([]);
+    const [number, setNumber] = useState();
     function classNames(...classes) {
         return classes.filter(Boolean).join(' ')
-      }
-    const ratingChanged = (newRating) => {
-        console.log(newRating);
-    };
+    }
     // const handleclick = (ele)=>{
-    //     setData((prev)=>[...prev,ele])
-    // }
-    useEffect(()=>{if(data.includes(selected)){return;} setData((prev)=>[...prev, selected])},[selected])
-    return (
+        //     setData((prev)=>[...prev,ele])
+        // }
+        useEffect(()=>{if(data.includes(selected)){return;} setData((prev)=>[...prev, selected]);},[selected])
+        return (
         <>
             <div className="flex min-h-screen flex-1 flex-col justify-center px-6 py-12 lg:px-8 bg-gray-900">
                 <div className="sm:mx-auto sm:w-full sm:max-w-sm">
@@ -70,7 +77,7 @@ const Signupstudent = () => {
                                                 {/* {JSON.stringify(data)} */}
                                             <span className="flex items-center">
                                                 {!selected&&(<span className="ml-3 block truncate">Select Language</span>)}
-                                                {selected&&(<span className="ml-3 block truncate">{selected.name}</span>)}
+                                                    {selected && (<span onClick={handleStars} className="ml-3 block truncate">{selected.name} </span>)}
                                             </span>
                                             <span className="pointer-events-none absolute inset-y-0 right-0 ml-3 flex items-center pr-2">
                                                 <ChevronUpDownIcon className="h-5 w-5 text-gray-400" aria-hidden="true" />
@@ -117,6 +124,7 @@ const Signupstudent = () => {
                                                                 ) : null}
                                                             </>
                                                         )}
+                                                        
                                                     </Listbox.Option>
                                                 ))}
                                             </Listbox.Options>
@@ -132,12 +140,6 @@ const Signupstudent = () => {
                                 return(<ul>
                                     <li className='flex items-center justify-between pt-2 text-white px-4'>
                                         <b>{ele.name}</b>
-                                        <ReactStars
-                                            count={5}
-                                            onChange={ratingChanged}
-                                            size={24}
-                                            activeColor="#ffd700"
-                                        />
                                     </li>
                                 </ul>)
                             }else{
@@ -145,6 +147,7 @@ const Signupstudent = () => {
                             }
                             })}
                         </>)}
+
                         </div>
                         <div>
                             <button
