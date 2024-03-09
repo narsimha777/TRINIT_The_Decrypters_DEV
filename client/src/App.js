@@ -10,6 +10,7 @@ import StudentDashboard from './screens/StudentDashboard'
 import Error from './screens/Error'
 import Signuptutor from './screens/SignupTeacher'
 import Flashcard from './screens/flashcard'
+import VideoCall from './screens/VideoCall'
 
 const App = () => {
   return (
@@ -24,6 +25,7 @@ const App = () => {
       <Route path='/signup/tutor' element={<Signuptutor/>}/>
       <Route path='/student/flashcard' element={<Flashcard/>}/>
       <Route path='/dashboard/tutor' element={<TeacherDashboard/>}/>
+      <Route path='/videocall/room' element={<VideoCall/>}/>
       <Route path='*' element={<Error/>}/>
         {/* <Route path='/teacher'/> */}
     </Routes>

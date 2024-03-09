@@ -32,7 +32,7 @@ const Login = () => {
               type="email"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
-              className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-200 focus:outline-none focus:ring focus:ring-indigo-500 focus:ring-opacity-50"
+              className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-900 focus:outline-none focus:ring focus:ring-indigo-500 focus:ring-opacity-50"
               required
             />
           </div>
@@ -45,7 +45,7 @@ const Login = () => {
               type="password"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
-              className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-200 focus:outline-none focus:ring focus:ring-indigo-500 focus:ring-opacity-50"
+              className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-900 focus:outline-none focus:ring focus:ring-indigo-500 focus:ring-opacity-50"
               required
             />
           </div>

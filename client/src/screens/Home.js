@@ -59,23 +59,6 @@ const Home = () => {
     console.log('Search based on filters:', { languageFilter, experienceFilter, pricingFilter });
   };
 
-  const handleFilterChange = (e) => {
-    const { name, value } = e.target;
-    switch (name) {
-      case 'language':
-        setLanguageFilter(value);
-        break;
-      case 'experience':
-        setExperienceFilter(value);
-        break;
-      case 'pricing':
-        setPricingFilter(value);
-        break;
-      default:
-        break;
-    }
-  };
-
 
   const handlePrev = () => {
     if (index === 0) {
