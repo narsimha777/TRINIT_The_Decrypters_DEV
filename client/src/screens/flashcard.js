@@ -25,8 +25,8 @@ const Flashcard = () => {
       }
     ]
   const [flipped, setFlipped] = useState(Array(flashcards.length).fill(false));
-  const [question, setQuestion] = useState([]);
-  const [answer, setAnswer] = useState([]);
+//   const [question, setQuestion] = useState([]);
+//   const [answer, setAnswer] = useState([]);
   const [open, setOpen] = useState(true)    
     const handleopen=()=>{
         setOpen(!open);
