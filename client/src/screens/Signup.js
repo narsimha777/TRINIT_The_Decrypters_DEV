@@ -1,9 +1,13 @@
 import React, { useState } from 'react'
+import { useNavigate } from 'react-router-dom'
+import ROUTES from '../routes'
 
 const Signup = () => {
+  const navigate = useNavigate();
   const [role, setRole] = useState("tutor")
   const handleChange = (e) => {
     setRole(e.target.value)
+    navigate(ROUTES.student());
   }
   return (
     <>
