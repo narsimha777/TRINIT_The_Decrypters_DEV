@@ -27,10 +27,6 @@ const lang = [
     { "code": "co", "name": "Corsican" },
     { "code": "cr", "name": "Cree" },
     { "code": "cs", "name": "Czech" },
-    {
-      "code": "cu",
-      "name": "Church Slavic; Old Slavonic; Church Slavonic; Old Bulgarian; Old Church Slavonic"
-    },
     { "code": "cv", "name": "Chuvash" },
     { "code": "cy", "name": "Welsh" },
     { "code": "da", "name": "Danish" },
