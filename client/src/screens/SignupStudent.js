@@ -3,8 +3,11 @@ import ReactStars from "react-rating-stars-component";
 import lang from '../constants/languages'
 import Select from 'react-select';
 import countries from '../constants/countries'
+import { useNavigate } from 'react-router-dom';
+import ROUTES from '../routes';
 
 const Signupstudent = () => {
+    const navigate = useNavigate()
     const [selectedLang, setSelectedLang] = useState([])
     const [ratings, setRatings] = useState([]);
 
@@ -14,6 +17,9 @@ const Signupstudent = () => {
         setRatings(newRatings);
     };
 
+    const handleSubmit= ()=>{
+        navigate(ROUTES.studentdash());
+    }
     return (
         <>
             <div className="flex min-h-screen flex-1 flex-col justify-center px-6 py-12 lg:px-8 bg-gray-900">
@@ -24,7 +30,7 @@ const Signupstudent = () => {
                 </div>
 
                 <div className="mt-10 sm:mx-auto sm:w-full sm:max-w-sm">
-                    <form className="space-y-6" action="#" method="POST">
+                    <form className="space-y-6" action="#" onSubmit={handleSubmit}>
                         <div className='m-0'>
                             <label htmlFor="email" className="block text-sm font-medium leading-6 text-white">
                                 Age
