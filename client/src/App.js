@@ -5,6 +5,7 @@ import Login from './screens/Login'
 import Signup from './screens/Signup'
 import Navbar from './components/Navbar'
 import Signupstudent from './screens/SignupStudent'
+import TeacherDashboard from './screens/TutorDashboard'
 
 const App = () => {
   return (
@@ -15,7 +16,7 @@ const App = () => {
       <Route path='/login' element={<Login/>}/>
       <Route path='/signup' element={<Signup/>}/>
       <Route path='/signup/student' element={<Signupstudent/>}/>
-        {/* <Route path='/teacher'/> */}
+      <Route path='/teacherDashboard' element={<TeacherDashboard/>}/>
     </Routes>
     </>
   )
