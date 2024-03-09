@@ -303,10 +303,14 @@ const TeacherDashboard = () => {
           {/* </div> */}
 
           {/* Filter component */}
-          <h2 className="text-xl font-semibold text-gray-800 mb-4">Languages Available</h2>
+          <h2 className="text-xl font-semibold text-gray-800 mb-4">Languages Known</h2>
           <div className="flex flex-col sm:flex-row items-center justify-around mb-8">
             {/* Language filter */}
             {profile.languages_known.map((ele)=>(<div className="p-5 rounded-lg bg-gray-100"><div><b>{ele.name}</b></div><div><em>Course-level:</em> {ele.level}</div></div>))}
+          </div>
+          <h2 className="text-xl font-semibold text-gray-800 mb-4">Courses Taking ]</h2>
+          <div className="flex flex-col sm:flex-row items-center justify-around mb-8">
+            
           </div>
 
           {/* Display Teacher Profile */}

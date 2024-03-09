@@ -10,18 +10,11 @@ const Signuptutor = () => {
     const navigate = useNavigate();
     const [selectedLang, setSelectedLang] = useState([])
     const [selectedValue, setSelectedValue] = useState([]);
-    const [ratings, setRatings] = useState([]);
     const handleChange = (index, selectedOption) => {
         const newValues = [...selectedValue];
-        newValues[index] = { name: selectedLang[index].name, level: selectedOption.value };
+        newValues[index] = { name: selectedLang[index].name, level: selectedOption };
         setSelectedValue(newValues);
       };
-      
-    const handleRatingChange = (index, rating) => {
-        const newRatings = [...ratings];
-        newRatings[index] = { name: selectedLang[index].name, rating: rating };
-        setRatings(newRatings);
-    };
 
     const handlesubmit = ()=>{
         navigate(ROUTES.tutordash());
@@ -114,12 +107,14 @@ const Signuptutor = () => {
                             {selectedLang.map((language, index) => (
                                 <div key={index} className='text-white flex flex-row justify-between align-center w-full font-medium'>
                                     <p>{language.name}</p>
-                                    <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor={`selectOption-${index}`}>Enter Course-level: <strong>{selectedValue[index]?.level}</strong></label>
-                                    <select id={`selectOption-${index}`} name={`selectOption-${index}`} value={selectedValue[index]?.level} onChange={(e) => handleChange(index, e)}>
-                                        <option value="A1">A1</option>
-                                        <option value="A2">A2</option>
-                                        <option value="B1">B1</option>
-                                        <option value="B2">B2</option>
+                                    <label className="block text-gray-500 text-sm font-bold mb-2" htmlFor={`selectOption-${index}`}>Enter Course-level: <strong>{selectedValue[index]?.level}</strong></label>
+                                    <select className='bg-gray-500 rounded' id={`selectOption-${index}`} name={`selectOption-${index}`} value={selectedValue[index]?.level} onChange={(e) => handleChange(index, e.target.value)}>
+                                        <option className='bg-gray-900' value="A1">A1</option>
+                                        <option className='bg-gray-900' value="A2">A2</option>
+                                        <option className='bg-gray-900' value="B1">B1</option>
+                                        <option className='bg-gray-900' value="B2">B2</option>
+                                        <option className='bg-gray-900' value="C1">C1</option>
+                                        <option className='bg-gray-900' value="C2">C2</option>
                                     </select>
                                 </div>
                             ))}

@@ -38,7 +38,7 @@ code {
   color: rgb(39, 39, 39);
 }
 
-button {
+/* button {
   width: 220px;
   margin-bottom: 25px;
   outline: none;
@@ -87,4 +87,4 @@ button:hover {
     padding: 6px 0;
     border-radius: 5px;
   }
-}
+} */
