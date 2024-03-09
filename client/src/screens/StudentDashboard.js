@@ -1,45 +1,73 @@
 import React, { useState } from 'react'
-import lang from '../constants/languages';
 import ReactStars from "react-rating-stars-component";
-import experience from '../constants/experience';
-import Select from 'react-select';
 import { Progress } from '@material-tailwind/react';
 
 const StudentDashboard = () => {
-  const [languageFilter, setLanguageFilter] = useState('');
-  const [experienceFilter, setExperienceFilter] = useState('');
-  const [pricingFilter, setPricingFilter] = useState('');
+  const classes = [{
+    "tutor": "611f1675c2b78c47d86d4a1a", // Replace with a valid ObjectId for the tutor
+    "course_name": "English 101",
+    "pricing": [
+      {
+        "30min": 50,
+        "60min": 80,
+        "90min": 120
+      }
+    ],
+    "course_desc": "An introductory course to basic english concepts.",
+    "Time_span": [
+      {
+        "start_time": "2024-03-10T09:00:00.000Z",
+        "duration": 60
+      },
+      {
+        "start_time": "2024-03-12T14:00:00.000Z",
+        "duration": 90
+      }
+    ],
+    "valid_upto": 20241231,
+    "Course_level": "Beginner",
+    "maximum_students": 20
+  },{
+    "tutor": "611f1675c2b78c47d86d4a1b", // Replace with a valid ObjectId for the tutor
+    "course_name": "Spanish Literature Seminar",
+    "pricing": [
+        {
+            "30min": 40,
+            "60min": 70,
+            "90min": 100
+        }
+    ],
+    "course_desc": "A deep dive into classic and contemporary Spanish literature.",
+    "Time_span": [
+        {
+            "start_time": "2024-03-09T07:00:00.000Z",
+            "duration": 60
+        },
+        {
+            "start_time": "2024-03-17T16:00:00.000Z",
+            "duration": 90
+        },
+        {
+            "start_time": "2024-03-17T16:00:00.000Z",
+            "duration": 90
+        }
+    ],
+    "valid_upto": 20241231,
+    "Course_level": "Intermediate",
+    "maximum_students": 15
+}]
 
-  const pricing = [
-    { "price": "<500" },
-    { "price": "500-2500" },
-    { "price": "2500-5000" },
-    { "price": ">5000" },
-  ]
+  const isJoinButtonEnabled = (startTime, duration) => {
+    const currentTime = new Date().getTime();
+    const classStartTime = new Date(startTime).getTime();
+    const classEndTime = classStartTime + duration * 60000; // Convert duration to milliseconds
 
-  // Function to handle filter changes
-  const handleFilterChange = (e) => {
-    const { name, value } = e.target;
-    switch (name) {
-      case 'language':
-        setLanguageFilter(value);
-        break;
-      case 'experience':
-        setExperienceFilter(value);
-        break;
-      case 'pricing':
-        setPricingFilter(value);
-        break;
-      default:
-        break;
-    }
+    return currentTime >= classStartTime && currentTime <= classEndTime;
   };
+  // Function to handle filter changes
+  
 
   // Placeholder function to handle search based on filters
-  const handleSearch = () => {
-    // Implement search functionality based on filters
-    console.log('Search based on filters:', { languageFilter, experienceFilter, pricingFilter });
-  };
   return (
     <>
       <div className="flex flex-col items-center justify-center py-2  bg-gray-100">
@@ -51,8 +79,30 @@ const StudentDashboard = () => {
           <div className="mb-8">
             <h2 className="text-xl font-semibold text-gray-800 mb-4">Upcoming Lessons</h2>
             {/* Placeholder for upcoming lessons */}
-            <div className="flex justify-between items-center bg-gray-200 p-4 rounded-lg">
-              <p className="text-lg text-gray-700">No upcoming lessons scheduled.</p>
+            <div className="flex flex-col justify-between items-center bg-gray-200 p-4 rounded-lg">
+              {classes.length===0 && <p className="text-lg text-gray-700">No upcoming lessons scheduled.</p>}
+              {classes.map((c, index) => (
+                <div className="container mx-auto py-3">
+                  <h2 className="text-3xl font-bold mb-4">{c.course_name}</h2>
+                  <div className="grid grid-cols-2 md:grid-cols-3 gap-4 flex-wrap">
+                    {c.Time_span.map((span, index) => (
+                      <div key={index} className="bg-white rounded-lg shadow-md p-6">
+                        <p className="text-lg font-semibold mb-2">Class {index + 1}</p>
+                        <p className="text-gray-600 mb-2">Start Time: {new Date(span.start_time).toLocaleString()}</p>
+                        <p className="text-gray-600 mb-2">Duration: {span.duration} minutes</p>
+                        <p className="text-gray-600 mb-2">Maximum Students: {c.maximum_students}</p>
+                        {/* <button disabled={!isJoinButtonEnabled(span.start_time,span.duration)} className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"> */}
+                        <button  className={`${isJoinButtonEnabled(span.start_time,span.duration)?'bg-blue-500 hover:bg-blue-700':'cursor-not-allowed bg-gray-400'} text-white font-bold py-2 px-4 rounded`}>
+                          Join Class
+                        </button>
+                      </div>
+                    ))}
+                  </div>
+                  <div className="text-gray-600 mt-4">
+                    <p>Taught by: {c.tutor}</p>
+                  </div>
+                </div>
+              ))}
             </div>
           </div>
 
@@ -63,67 +113,18 @@ const StudentDashboard = () => {
             <div className="flex flex-col justify-between items-center bg-gray-100 p-4 rounded-lg">
               <div className='flex flex-col md:flex-row my-3 w-full justify-between items-center'>
                 <p>English</p>
-                <Progress value={70} size='sm' label={'completed'} className='w-1/2 bg-gray-400' />
+                <Progress value={70} size='sm' label={'completed'} className='w-full md:w-1/2 bg-gray-400' />
               </div>
               <div className='flex flex-col md:flex-row my-3 w-full justify-between items-center'>
                 <p>Spanish</p>
-                <Progress value={60} size='sm' label={'completed'} className='w-1/2 bg-gray-400' />
+                <Progress value={60} size='sm' label={'completed'} className='w-full md:w-1/2 bg-gray-400' />
               </div>
               <div className='flex flex-col md:flex-row my-3 w-full justify-between items-center'>
                 <p>German</p>
-                <Progress value={80} size='sm' label={'completed'} className='w-1/2 bg-gray-400' />
+                <Progress value={80} size='sm' label={'completed'} className='w-full md:w-1/2 bg-gray-400' />
               </div>
             </div>
           </div>
-
-          {/* Filter component */}
-            <h2 className="text-xl font-semibold text-gray-800 mb-4">Filter Tutors</h2>
-          <div className="flex flex-col sm:flex-row items-center justify-between mb-8">
-            {/* Language filter */}
-            <Select
-              className="basic-single md:w-1/3 w-full mx-3 my-1 "
-              classNamePrefix="select"
-              defaultValue={lang[0]}
-              isSearchable={true}
-              name="color"
-              options={lang}
-              value={languageFilter}
-              onChange={setLanguageFilter}
-              getOptionLabel={(option) => option.name}
-              getOptionValue={(option) => option.code}
-            />
-
-            {/* Experience filter */}
-            <Select
-              className="basic-single md:w-1/3 w-full mx-3 my-1"
-              classNamePrefix="select"
-              defaultValue={experience[0]}
-              isSearchable={true}
-              name="color"
-              options={experience}
-              value={experienceFilter}
-              onChange={setExperienceFilter}
-              getOptionLabel={(option) => option.level}
-              getOptionValue={(option) => option.level}
-            />
-
-            {/* Pricing filter */}
-            <Select
-              className="basic-single md:w-1/3 w-full mx-3 my-1"
-              classNamePrefix="select"
-              defaultValue={pricing[0]}
-              isSearchable={true}
-              name="color"
-              options={pricing}
-              value={pricingFilter}
-              onChange={setPricingFilter}
-              getOptionLabel={(option) => option.price}
-              getOptionValue={(option) => option.price}
-            />
-
-            <button onClick={handleSearch} className="px-4 py-2 bg-gray-900 text-white rounded-md hover:bg-gray-600 focus:outline-none focus:bg-gray-600">Apply Filters</button>
-          </div>
-
 
           {/* Display recommended tutors */}
 

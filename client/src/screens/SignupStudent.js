@@ -1,32 +1,20 @@
-import React, { useEffect } from 'react'
-import { Listbox, Transition } from '@headlessui/react'
-import { CheckIcon, ChevronUpDownIcon } from '@heroicons/react/20/solid'
+import React, { useState } from 'react'
 import ReactStars from "react-rating-stars-component";
-import { Fragment, useState } from 'react'
 import lang from '../constants/languages'
-const Signupstudent = () => {
+import Select from 'react-select';
+import countries from '../constants/countries'
 
-    const ratingChanged = (newRating) => {
-        // console.log(newRating);
-        setNumber(newRating);
+const Signupstudent = () => {
+    const [selectedLang, setSelectedLang] = useState([])
+    const [ratings, setRatings] = useState([]);
+
+    const handleRatingChange = (index, rating) => {
+        const newRatings = [...ratings];
+        newRatings[index] = { name: selectedLang[index].name, rating: rating };
+        setRatings(newRatings);
     };
-    const handleStars=()=>{
-        const user = selected; data.pop(selected); 
-        setData((prev)=>[...prev, {...user, 'rating':number}]);
-        console.log(data)
-    }
-    
-    const [ selected, setSelected ] = useState();
-    const [data, setData] = useState([]);
-    const [number, setNumber] = useState();
-    function classNames(...classes) {
-        return classes.filter(Boolean).join(' ')
-    }
-    // const handleclick = (ele)=>{
-        //     setData((prev)=>[...prev,ele])
-        // }
-        useEffect(()=>{if(data.includes(selected)){return;} setData((prev)=>[...prev, selected]);},[selected])
-        return (
+
+    return (
         <>
             <div className="flex min-h-screen flex-1 flex-col justify-center px-6 py-12 lg:px-8 bg-gray-900">
                 <div className="sm:mx-auto sm:w-full sm:max-w-sm">
@@ -47,6 +35,7 @@ const Signupstudent = () => {
                                     name="email"
                                     type="number"
                                     required
+                                    min={5}
                                     className="block w-full rounded-md border-0 p-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                                 />
                             </div>
@@ -59,95 +48,53 @@ const Signupstudent = () => {
                                 </label>
                             </div>
                             <div className="mt-2">
-                                <input
-                                    id="password"
-                                    name="password"
-                                    type="text"
-                                    required
-                                    className="block w-full rounded-md border-0 p-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                                <Select
+                                options={countries}
+                                getOptionLabel={(option) => option.name}
+                                getOptionValue={(option) => option.name}
                                 />
                             </div>
                         </div>
-                        <Listbox value={selected} onChange={setSelected}>
-                            {({ open }) => (
-                                <>
-                                    <Listbox.Label className="block text-sm font-medium leading-6 text-white">Language to learn</Listbox.Label>
-                                    <div className="relative mt-2">
-                                        <Listbox.Button className="relative w-full cursor-default rounded-md bg-white py-1.5 pl-3 pr-10 text-left text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 focus:outline-none focus:ring-2 focus:ring-indigo-500 sm:text-sm sm:leading-6">
-                                                {/* {JSON.stringify(data)} */}
-                                            <span className="flex items-center">
-                                                {!selected&&(<span className="ml-3 block truncate">Select Language</span>)}
-                                                    {selected && (<span onClick={handleStars} className="ml-3 block truncate">{selected.name} </span>)}
-                                            </span>
-                                            <span className="pointer-events-none absolute inset-y-0 right-0 ml-3 flex items-center pr-2">
-                                                <ChevronUpDownIcon className="h-5 w-5 text-gray-400" aria-hidden="true" />
-                                            </span>
-                                        </Listbox.Button>
-                                        <Transition
-                                            show={open}
-                                            as={Fragment}
-                                            leave="transition ease-in duration-100"
-                                            leaveFrom="opacity-100"
-                                            leaveTo="opacity-0"
-                                        >
-                                            <Listbox.Options className="absolute z-10 mt-1 max-h-56 w-full overflow-auto rounded-md bg-white py-1 text-base shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none sm:text-sm">
-                                                {lang.map((ele) => (
-                                                    <Listbox.Option
-                                                        key={ele.code}
-                                                        className={({ active }) =>
-                                                            classNames(
-                                                                active ? 'bg-indigo-600 text-white' : 'text-gray-900',
-                                                                'relative cursor-default select-none py-2 pl-3 pr-9'
-                                                            )
-                                                        }
-                                                        value={ele}
-                                                    >
-                                                        {({ selected, active }) => (
-                                                            <>
-                                                                <div className="flex items-center">
-                                                                    <span
-                                                                        className={classNames(selected ? 'font-semibold' : 'font-normal', 'ml-3 block truncate')}
-                                                                    >
-                                                                        {ele.name}
-                                                                    </span>
-                                                                </div>
-
-                                                                {selected ? (
-                                                                    <span
-                                                                        className={classNames(
-                                                                            active ? 'text-white' : 'text-indigo-600',
-                                                                            'absolute inset-y-0 right-0 flex items-center pr-4'
-                                                                        )}
-                                                                    >
-                                                                        <CheckIcon className="h-5 w-5" aria-hidden="true" />
-                                                                    </span>
-                                                                ) : null}
-                                                            </>
-                                                        )}
-                                                        
-                                                    </Listbox.Option>
-                                                ))}
-                                            </Listbox.Options>
-                                        </Transition>
-                                    </div>
-                                </>
-                            )}
-                        </Listbox>
                         <div>
-                        {data[data.length-1]&&(<>
-                            <h3 className='text-white'>Selected languages</h3>
-                            {data.map((ele)=>{if(ele){
-                                return(<ul>
-                                    <li className='flex items-center justify-between pt-2 text-white px-4'>
-                                        <b>{ele.name}</b>
-                                    </li>
-                                </ul>)
-                            }else{
-                                return(<></>)
-                            }
-                            })}
-                        </>)}
 
+                            <label htmlFor="langs" className="block text-sm font-medium leading-6 text-white">
+                                Languages Known
+                            </label>
+                            <Select
+                                defaultValue={[]}
+                                isMulti
+                                id='langs'
+                                name="colors"
+                                options={lang}
+                                value={selectedLang}
+                                onChange={setSelectedLang}
+                                isOptionDisabled={() => selectedLang.length >= 5}
+                                getOptionLabel={(option) => option.name}
+                                getOptionValue={(option) => option.name}
+                                className="basic-multi-select mt-2"
+                                placeholder="Select Languages"
+                                classNamePrefix="select"
+                            />
+                        </div>
+                        <div>
+                            {/* {
+                                selectedLang.map((e) => {
+                                    return <div className='text-white flex flex-row justify-between align-center w-full font-medium'>
+                                        <h5>{e.name}</h5>
+                                        <ReactStars count={5} value={4} />
+                                    </div>
+                                })
+                            } */}
+                            {selectedLang.map((language, index) => (
+                                <div className='text-white flex flex-row justify-between align-center w-full font-medium'>
+                                    <p>{language.name}</p>
+                                    <ReactStars
+                                        count={5}
+                                        value={0}
+                                        onChange={(rating) => handleRatingChange(index, rating)}
+                                    />
+                                </div>
+                            ))}
                         </div>
                         <div>
                             <button

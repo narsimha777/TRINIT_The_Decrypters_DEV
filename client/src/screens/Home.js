@@ -1,4 +1,7 @@
 import { useState } from "react";
+import lang from '../constants/languages';
+import experience from '../constants/experience';
+import Select from 'react-select';
 
 import ImgHero1 from "../assets/head1.jpg";
 import ImgHero2 from "../assets/head2.jpg";
@@ -34,13 +37,44 @@ const ARTICLESHERO = [
   },
 ];
 
+const pricing = [
+  { "price": "<500" },
+  { "price": "500-2500" },
+  { "price": "2500-5000" },
+  { "price": ">5000" },
+]
+
 
 const Home = () => {
+  const [languageFilter, setLanguageFilter] = useState('');
+  const [experienceFilter, setExperienceFilter] = useState('');
+  const [pricingFilter, setPricingFilter] = useState('');
   const [index, setIndex] = useState(0);
   setTimeout(() => {
     setIndex((index + 1) % 3)
   }, 3000);
   const navigate = useNavigate();
+  const handleSearch = () => {
+    // Implement search functionality based on filters
+    console.log('Search based on filters:', { languageFilter, experienceFilter, pricingFilter });
+  };
+
+  const handleFilterChange = (e) => {
+    const { name, value } = e.target;
+    switch (name) {
+      case 'language':
+        setLanguageFilter(value);
+        break;
+      case 'experience':
+        setExperienceFilter(value);
+        break;
+      case 'pricing':
+        setPricingFilter(value);
+        break;
+      default:
+        break;
+    }
+  };
 
 
   const handlePrev = () => {
@@ -68,31 +102,67 @@ const Home = () => {
         <article className=" flex-col flex items-start justify-center p-3 lg:col-start-5 lg:col-end-8 lg:row-start-1 lg:row-end-2 lg:px-16 md:w-1/2">
           <div>
 
-          <h1 className="mb-6 text-4xl font-bold">{ARTICLESHERO[index].title}</h1>
-          <p className="mb-8 text-gray-500">{ARTICLESHERO[index].description}</p>
-          <button onClick={() => navigate("/signup")} className="flex items-center  fill-black hover:fill-gray-500 hover:text-gray-500">
-            <span className="text-base font-bold uppercase  mx-2 bg-gray-900 p-5 rounded text-white">
-              Enroll now
-            </span>
-            {/* <IconArrowShop /> */}
-          </button>
+            <h1 className="mb-6 text-4xl font-bold">{ARTICLESHERO[index].title}</h1>
+            <p className="mb-8 text-gray-500">{ARTICLESHERO[index].description}</p>
+            <button onClick={() => navigate("/signup")} className="flex items-center  fill-black hover:fill-gray-500 hover:text-gray-500">
+              <span className="text-base font-bold uppercase  mx-2 bg-gray-900 p-5 rounded text-white">
+                Enroll now
+              </span>
+              {/* <IconArrowShop /> */}
+            </button>
           </div>
-          {/* <div className="col-start-3 col-end-4 row-start-2 row-end-3 flex bg-black text-white lg:col-start-5 lg:col-end-6 lg:row-start-2 lg:row-end-3">
-            <button
-              className="w-full hover:bg-gray-800"
-              onClick={handlePrev}
-            >
-              <ArrowLeftIcon className="m-6 text-white" />
-            </button>
-            <button
-              className="w-full hover:bg-gray-800"
-              onClick={handleNext}
-            >
-              <ArrowRightIcon className="m-6 text-white" />
-            </button>
-          </div> */}
         </article>
       </header>
+      {/* Filter component */}
+      <div className="m-8">
+
+        <h2 className="text-2xl text-upper uppercase  font-bold text-gray-800 mb-4">Filter Tutors</h2>
+        <div className="flex flex-col sm:flex-row items-center justify-between mb-8">
+          {/* Language filter */}
+          <Select
+            className="basic-single md:w-1/3 w-full mx-3 my-1 "
+            classNamePrefix="select"
+            defaultValue={lang[0]}
+            isSearchable={true}
+            name="color"
+            options={lang}
+            value={languageFilter}
+            onChange={setLanguageFilter}
+            getOptionLabel={(option) => option.name}
+            getOptionValue={(option) => option.code}
+          />
+
+          {/* Experience filter */}
+          <Select
+            className="basic-single md:w-1/3 w-full mx-3 my-1"
+            classNamePrefix="select"
+            defaultValue={experience[0]}
+            isSearchable={true}
+            name="color"
+            options={experience}
+            value={experienceFilter}
+            onChange={setExperienceFilter}
+            getOptionLabel={(option) => option.level}
+            getOptionValue={(option) => option.level}
+          />
+
+          {/* Pricing filter */}
+          <Select
+            className="basic-single md:w-1/3 w-full mx-3 my-1"
+            classNamePrefix="select"
+            defaultValue={pricing[0]}
+            isSearchable={true}
+            name="color"
+            options={pricing}
+            value={pricingFilter}
+            onChange={setPricingFilter}
+            getOptionLabel={(option) => option.price}
+            getOptionValue={(option) => option.price}
+          />
+
+          <button onClick={handleSearch} className="px-4 py-2 bg-gray-900 text-white rounded-md hover:bg-gray-600 focus:outline-none focus:bg-gray-600">Apply Filters</button>
+        </div>
+      </div>
     </>
   );
 };
