@@ -12,6 +12,7 @@
     "@testing-library/user-event": "^13.5.0",
     "react": "^18.2.0",
     "react-copy-to-clipboard": "^5.1.0",
+    "react-currency-format": "^1.1.0",
     "react-dom": "^18.2.0",
     "react-quizlet-flashcard": "^3.0.0",
     "react-rating-stars-component": "^2.2.0",
@@ -20,6 +21,8 @@
     "react-select": "^5.8.0",
     "simple-peer": "^9.11.1",
     "socket.io-client": "^4.7.4",
+    "react-stripe": "^0.1.0",
+    "react-stripe-checkout": "^2.6.3",
     "web-vitals": "^2.1.4"
   },
   "scripts": {

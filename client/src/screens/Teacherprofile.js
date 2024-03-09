@@ -1,8 +1,9 @@
 import React from 'react';
 import { PaperClipIcon } from '@heroicons/react/20/solid'
-
+// import {payment} from "./screens/Payment.js"
 const TeacherProfile = ({ profile }) => {
   return (
+
     <div className="bg-gray-100 p-6 rounded-lg">
       <h2 className="text-xl font-semibold mb-4">{profile.username}</h2>
       <div className="grid grid-cols-2 gap-4">
