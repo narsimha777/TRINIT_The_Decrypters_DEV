@@ -7,7 +7,14 @@ const Signup = () => {
   const [role, setRole] = useState("tutor")
   const handleChange = (e) => {
     setRole(e.target.value)
-    navigate(ROUTES.student());
+    // navigate(ROUTES.student());
+  }
+  const handleSubmit=()=>{
+    if(role==='student'){
+      navigate(ROUTES.student())
+    }else{
+      navigate(ROUTES.tutor())
+    }
   }
   return (
     <>
@@ -21,7 +28,7 @@ const Signup = () => {
         </div>
 
         <div className="mt-10">
-          <form className="space-y-6" action="#" method="POST">
+          <form className="space-y-6" action="#" onSubmit={handleSubmit}>
             <div className='m-0'>
               <label htmlFor="email" className="block text-sm font-medium leading-6 text-white">
                 Email address
