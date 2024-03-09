@@ -6,7 +6,7 @@ const fetchstudent=require("../middleware/fetchstudent")
 // postcourse
 // gettut
 
-route.get("/gettutor",gettut)
+route.get("/gettutor",fetchstudent,gettut)
 route.post("/postcourse",fetchtutor,postcourse)
 
 module.exports = route;
