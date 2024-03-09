@@ -1,5 +1,7 @@
 const express = require('express')
 const authRoutes = require("./routes/auth");
+const tutorRoutes = require("./routes/tutor");
+
 const dbconn = require('./config/db')
 const app = express()
 const cors = require("cors");
@@ -22,4 +24,5 @@ app.use(
   })
 );
 app.use("/auth",authRoutes)
+app.use("/tutor",tutorRoutes)
 

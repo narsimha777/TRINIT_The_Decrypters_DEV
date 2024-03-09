@@ -136,10 +136,13 @@ route.post('/createtutor',
         try {
             const { username, password } = req.body;
             console.log(req.headers.authorization);
-            if (req.headers.authorization || req.cookies.authcookie) {
-                return res.status(200).json({ message: "Already logged in", success: true });
-            }
-    
+            // if (req.headers.authorization || req.cookies.authcookie) {
+            //     return res.status(200).json({ message: "Already logged in", success: true });
+            // }
+
+            const salt = await bcrypt.genSalt(10);
+            const hash = await bcrypt.hash(req.body.password, salt);
+            console.log(hash);
             const existingTutor = await tutorModel.findOne({ username });
             const existingStudent = await studentModel.findOne({ username });
     

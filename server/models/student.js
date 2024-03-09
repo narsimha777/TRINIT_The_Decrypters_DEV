@@ -22,9 +22,17 @@ const studentSchema=new Schema({
     country:{type:String,required:true},
     languages: [{
         name: { type: String },
-        fluency_rate: { type: Number }
+        fluency_rate: { type: Number}
     }],
-    courses_taken:[{type:mongoose.Schema.ObjectId,ref:"course"}],
+    aimtolearn: [{
+        name: { type: String },
+    }],
+    "courses_taken": [
+        {
+            "course": { "type": mongoose.Schema.ObjectId, "ref": "course" },
+            "percentage_completed": { "type": Number }
+        },
+    ]
 })
 const studentModel=mongoose.model('student',studentSchema);
 module.exports=studentModel;
