@@ -82,4 +82,14 @@ async function postcourse(req,res){
     }
 }
 
-module.exports = { gettut,postcourse};
+async function getlang(req,res){
+   try {
+    tutorId=req.user.id;
+    const tutor=await tutorModel.findById(tutorId);
+    return res.status(200).json({ message: 'languages taught', success: True,language:tutor.languages_known });
+   } catch (error) {
+        return res.status(400).json({ message: 'Internal server error', success: false });
+   }
+}
+
+module.exports = { gettut,postcourse,getlang};

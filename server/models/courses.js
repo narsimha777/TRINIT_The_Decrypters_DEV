@@ -19,10 +19,7 @@ const courseSchema=new Schema({
         type:String,
         required:true
     },
-    maximum_students:{
-        type:Number,
-        required:true
-    }
+    students:[{type:String}]   
 })
 
 const courseModel=mongoose.model('course',courseSchema);
