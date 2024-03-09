@@ -1,17 +1,19 @@
-import React from 'react'
+import React, { useContext } from 'react'
 import { useState } from 'react'
 import image from '../assets/loginbg.jpg';
-import { NavLink } from 'react-router-dom';
+import { NavLink, useNavigate } from 'react-router-dom';
 import ROUTES from '../routes';
+import { AppContext } from '../context/AppContext';
 const Login = () => {
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
+  const navigate = useNavigate()
+  const {isLogin,setIsLogin} = useContext(AppContext)
 
   const handleSubmit = (event) => {
     event.preventDefault()
-    // Add your form submission logic here
-    console.log('Email:', email)
-    console.log('Password:', password)
+    setIsLogin(true)
+    navigate('/')
   }
   return (
     <div className="flex min-h-screen items-center justify-center bg-cover bg-gray-900">

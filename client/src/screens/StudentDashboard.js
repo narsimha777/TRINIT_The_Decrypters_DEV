@@ -63,15 +63,15 @@ const StudentDashboard = () => {
             <div className="flex flex-col justify-between items-center bg-gray-100 p-4 rounded-lg">
               <div className='flex flex-col md:flex-row my-3 w-full justify-between items-center'>
                 <p>English</p>
-                <Progress value={70} size='sm' label={'completed'} className='w-1/2 bg-gray-400' />
+                <Progress value={70} size='sm' label={'completed'} className='w-full md:w-1/2 bg-gray-400' />
               </div>
               <div className='flex flex-col md:flex-row my-3 w-full justify-between items-center'>
                 <p>Spanish</p>
-                <Progress value={60} size='sm' label={'completed'} className='w-1/2 bg-gray-400' />
+                <Progress value={60} size='sm' label={'completed'} className='w-full md:w-1/2 bg-gray-400' />
               </div>
               <div className='flex flex-col md:flex-row my-3 w-full justify-between items-center'>
                 <p>German</p>
-                <Progress value={80} size='sm' label={'completed'} className='w-1/2 bg-gray-400' />
+                <Progress value={80} size='sm' label={'completed'} className='w-full md:w-1/2 bg-gray-400' />
               </div>
             </div>
           </div>

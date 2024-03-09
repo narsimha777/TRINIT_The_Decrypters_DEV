@@ -1,15 +1,22 @@
-import { Fragment, useState } from 'react'
+import { Fragment, useContext, useState } from 'react'
 import { Disclosure, Menu, Transition } from '@headlessui/react'
 import { Bars3Icon, BellIcon, XMarkIcon } from '@heroicons/react/24/outline'
 import logo from '../assets/linglogo.png'
-import { Link, NavLink } from 'react-router-dom'
+import { Link, NavLink, useNavigate } from 'react-router-dom'
+import { Button } from '@material-tailwind/react'
+import { AppContext } from '../context/AppContext'
 
 function classNames(...classes) {
     return classes.filter(Boolean).join(' ')
 }
 
 export default function Navbar() {
-    const [isLogin, setIsLogin] = useState(false)
+    const {isLogin, setIsLogin} = useContext(AppContext)
+    const navigate = useNavigate()
+    const handleLogout = () => {
+        setIsLogin(false)
+        navigate("/")
+    }
     return (
         <Disclosure as="nav" className="bg-gray-800 sticky top-0 z-10">
             {({ open }) => (
@@ -38,10 +45,22 @@ export default function Navbar() {
                                     <h3 className='text-white mx-2 font-medium'>Lingua Connect</h3>
                                 </div>
                                 <div className="hidden sm:ml-6 sm:block">
-                                    <div className="flex space-x-4">
+                                    {isLogin ? <div className="flex space-x-4">
+                                        <NavLink
+                                            to={'/dashboard/student'}
+                                            className={({ isActive }) =>
+                                                [
+                                                    isActive ? 'bg-gray-900 text-white' : 'text-gray-300 hover:bg-gray-700 hover:text-white',
+                                                    'rounded-md px-3 py-2 text-sm font-medium'
+                                                ].join(" ")
+                                            }
+                                        >
+                                            Dashboard
+                                        </NavLink>
+                                    </div> : <div className="flex space-x-4">
                                         <NavLink
                                             to={'/'}
-                                            className={({ isActive }) => 
+                                            className={({ isActive }) =>
                                                 [
                                                     isActive ? 'bg-gray-900 text-white' : 'text-gray-300 hover:bg-gray-700 hover:text-white',
                                                     'rounded-md px-3 py-2 text-sm font-medium'
@@ -63,7 +82,7 @@ export default function Navbar() {
                                         </NavLink>
                                         <NavLink
                                             to={'/signup'}
-                                            className={({ isActive }) => 
+                                            className={({ isActive }) =>
                                                 [
                                                     isActive ? 'bg-gray-900 text-white' : 'text-gray-300 hover:bg-gray-700 hover:text-white',
                                                     'rounded-md px-3 py-2 text-sm font-medium'
@@ -72,7 +91,7 @@ export default function Navbar() {
                                         >
                                             Sign Up
                                         </NavLink>
-                                    </div>
+                                    </div>}
                                 </div>
                             </div>
                             {isLogin ? <div className="absolute inset-y-0 right-0 flex items-center pr-2 sm:static sm:inset-auto sm:ml-6 sm:pr-0">
@@ -110,32 +129,32 @@ export default function Navbar() {
                                         <Menu.Items className="absolute right-0 z-10 mt-2 w-48 origin-top-right rounded-md bg-white py-1 shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none">
                                             <Menu.Item>
                                                 {({ active }) => (
-                                                    <a
-                                                        href="#"
+                                                    <Link
+                                                        to="/dashboard/student"
                                                         className={classNames(active ? 'bg-gray-100' : '', 'block px-4 py-2 text-sm text-gray-700')}
                                                     >
                                                         Your Profile
-                                                    </a>
+                                                    </Link>
                                                 )}
                                             </Menu.Item>
                                             <Menu.Item>
                                                 {({ active }) => (
-                                                    <a
-                                                        href="#"
+                                                    <Link
+                                                        to="/"
                                                         className={classNames(active ? 'bg-gray-100' : '', 'block px-4 py-2 text-sm text-gray-700')}
                                                     >
                                                         Settings
-                                                    </a>
+                                                    </Link>
                                                 )}
                                             </Menu.Item>
                                             <Menu.Item>
                                                 {({ active }) => (
-                                                    <a
-                                                        href="#"
+                                                    <button
+                                                        onClick={handleLogout}
                                                         className={classNames(active ? 'bg-gray-100' : '', 'block px-4 py-2 text-sm text-gray-700')}
                                                     >
                                                         Sign out
-                                                    </a>
+                                                    </button>
                                                 )}
                                             </Menu.Item>
                                         </Menu.Items>
@@ -146,47 +165,59 @@ export default function Navbar() {
                     </div>
 
                     <Disclosure.Panel className="sm:hidden">
-                        <div className="space-y-1 px-2 pb-3 pt-2">
+                        {isLogin ? <div className="space-y-1 px-2 pb-3 pt-2">
                             <Disclosure.Button
                                 as="a"
                                 href={'/'}
-                                className={({ isActive }) => 
+                                className={({ isActive }) =>
                                     [
                                         // isActive ? 'bg-gray-900 text-white' : 'text-gray-300 hover:bg-gray-700 hover:text-white',
                                         'rounded-md px-3 py-2 text-sm font-medium'
                                     ].join(" ")
                                 }
                             >
-                                Home
-                            </Disclosure.Button>
-                            <Disclosure.Button
-                                as="a"
-                                href={'/login'}
-                                className={({ isActive }) => 
-                                    [
-                                        isActive ? 'bg-gray-900 text-white' : 'text-gray-300 hover:bg-gray-700 hover:text-white',
-                                        'rounded-md px-3 py-2 text-sm font-medium'
-                                    ].join(" ")
-                                }
-                            >
-                                Login
-                            </Disclosure.Button>
-                            <Disclosure.Button
-                                as="a"
-                                href={'/signup'}
-                                className={({ isActive }) => 
-                                    [
-                                        isActive ? 'bg-gray-900 text-white' : 'text-gray-300 hover:bg-gray-700 hover:text-white',
-                                        'rounded-md px-3 py-2 text-sm font-medium'
-                                    ].join(" ")
-                                }
-                            >
-                                Signup
-                            </Disclosure.Button>
-                        </div>
-                    </Disclosure.Panel>
+                                Dashboard
+                            </Disclosure.Button></div>:<div className="space-y-1 px-2 pb-3 pt-2">
+                                <Disclosure.Button
+                                    as="a"
+                                    href={'/'}
+                                    className={({ isActive }) =>
+                                        [
+                                            // isActive ? 'bg-gray-900 text-white' : 'text-gray-300 hover:bg-gray-700 hover:text-white',
+                                            'rounded-md px-3 py-2 text-sm font-medium'
+                                        ].join(" ")
+                                    }
+                                >
+                                    Home
+                                </Disclosure.Button>
+                                <Disclosure.Button
+                                    as="a"
+                                    href={'/login'}
+                                    className={({ isActive }) =>
+                                        [
+                                            isActive ? 'bg-gray-900 text-white' : 'text-gray-300 hover:bg-gray-700 hover:text-white',
+                                            'rounded-md px-3 py-2 text-sm font-medium'
+                                        ].join(" ")
+                                    }
+                                >
+                                    Login
+                                </Disclosure.Button>
+                                <Disclosure.Button
+                                    as="a"
+                                    href={'/signup'}
+                                    className={({ isActive }) =>
+                                        [
+                                            isActive ? 'bg-gray-900 text-white' : 'text-gray-300 hover:bg-gray-700 hover:text-white',
+                                            'rounded-md px-3 py-2 text-sm font-medium'
+                                        ].join(" ")
+                                    }
+                                >
+                                    Signup
+                                </Disclosure.Button>
+                            </div>}
+                        </Disclosure.Panel>
                 </>
             )}
-        </Disclosure>
-    )
+                </Disclosure>
+            )
 }
