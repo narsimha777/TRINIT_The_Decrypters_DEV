@@ -7,7 +7,7 @@ const dbconn = require('./config/db')
 const app = express()
 const cors = require("cors");
 const cookieparser=require('cookie-parser')
-const port = 3000
+const port = 5000
 dbconn()
 app.use(express.json());  
 app.get('/', (req, res) => {
@@ -19,7 +19,7 @@ app.listen(port, () => {
 })
 app.use(
   cors({
-    origin: "http://localhost:3000",
+    origin: "*",
     methods: "GET,POST,PUT,DELETE",
     credentials: true,
   })

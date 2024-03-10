@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import lang from '../constants/languages';
 import experience from '../constants/experience';
 import Select from 'react-select';
@@ -9,6 +9,7 @@ import ImgHero3 from "../assets/hero3.jpg";
 
 import { ArrowLeftIcon, ArrowRightIcon } from '@heroicons/react/24/outline'
 import { useNavigate } from "react-router-dom";
+import { AppContext } from "../context/AppContext";
 
 
 
@@ -50,6 +51,7 @@ const Home = () => {
   const [experienceFilter, setExperienceFilter] = useState('');
   const [pricingFilter, setPricingFilter] = useState('');
   const [index, setIndex] = useState(0);
+  const {loginUser,getUserDetails} = useContext(AppContext)
   setTimeout(() => {
     setIndex((index + 1) % 3)
   }, 3000);
@@ -73,6 +75,13 @@ const Home = () => {
     }
     setIndex(index + 1);
   };
+  useEffect(() => {
+    const getDetails = async () =>{
+      await getUserDetails(localStorage.getItem('authToken'))
+    }
+    getDetails();
+  }, [])
+  
 
   return (
     <>
@@ -84,7 +93,6 @@ const Home = () => {
         />
         <article className=" flex-col flex items-start justify-center p-3 lg:col-start-5 lg:col-end-8 lg:row-start-1 lg:row-end-2 lg:px-16 md:w-1/2">
           <div>
-
             <h1 className="mb-6 text-4xl font-bold">{ARTICLESHERO[index].title}</h1>
             <p className="mb-8 text-gray-500">{ARTICLESHERO[index].description}</p>
             <button onClick={() => navigate("/signup")} className="flex items-center  fill-black hover:fill-gray-500 hover:text-gray-500">
@@ -144,7 +152,7 @@ const Home = () => {
           />
 
           <button onClick={handleSearch} className="px-4 py-2 bg-gray-900 text-white rounded-md hover:bg-gray-600 focus:outline-none focus:bg-gray-600">Apply Filters</button>
-        </div>
+        </div>  
       </div>
     </>
   );

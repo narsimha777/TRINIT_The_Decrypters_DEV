@@ -1,15 +1,22 @@
-import React, { useState } from 'react'
+import React, { useContext, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import ROUTES from '../routes'
+import { AppContext } from '../context/AppContext';
 
 const Signup = () => {
   const navigate = useNavigate();
-  const [role, setRole] = useState("tutor")
+  const {role, setRole,signEmail,setSignEmail,signUsername,setSignUsername,setSignPassword,signPassword} = useContext(AppContext)
+  const [confPass, setConfPass] = useState('')
   const handleChange = (e) => {
     setRole(e.target.value)
     // navigate(ROUTES.student());
   }
-  const handleSubmit=()=>{
+  const handleSubmit=(e)=>{
+    e.preventDefault()
+    if(signPassword!==confPass){
+      alert("Passwords dont match");
+      return;
+    }
     if(role==='student'){
       navigate(ROUTES.student())
     }else{
@@ -28,7 +35,7 @@ const Signup = () => {
         </div>
 
         <div className="mt-10">
-          <form className="space-y-6" action="#" onSubmit={handleSubmit}>
+          <form className="space-y-6"  onSubmit={handleSubmit}>
             <div className='m-0'>
               <label htmlFor="email" className="block text-sm font-medium leading-6 text-white">
                 Email address
@@ -38,6 +45,8 @@ const Signup = () => {
                   id="email"
                   name="email"
                   type="email"
+                  value={signEmail}
+                  onChange={(e)=>{setSignEmail(e.target.value)}}
                   autoComplete="email"
                   required
                   className="block w-full rounded-md border-0 p-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
@@ -56,6 +65,8 @@ const Signup = () => {
                   id="username"
                   name="username"
                   type="text"
+                  value={signUsername}
+                  onChange={(e)=>{setSignUsername(e.target.value)}}
                   autoComplete="current-username"
                   required
                   className="block w-full rounded-md border-0 p-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
@@ -72,6 +83,8 @@ const Signup = () => {
                 <input
                   id="password"
                   name="password"
+                  value={signPassword}
+                  onChange={(e)=>{setSignPassword(e.target.value)}}
                   type="password"
                   autoComplete="current-password"
                   required
@@ -90,6 +103,8 @@ const Signup = () => {
                   id="cpassword"
                   name="cpassword"
                   type="cpassword"
+                  value={confPass}
+                  onChange={(e)=>{setConfPass(e.target.value)}}
                   autoComplete="current-cpassword"
                   required
                   className="block w-full rounded-md border-0 p-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"

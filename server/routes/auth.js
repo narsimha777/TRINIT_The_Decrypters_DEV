@@ -23,12 +23,12 @@ route.post('/createstudent',
             const existingUser1 = await tutorModel.findOne({ username: req.body.username });
 
             if (existingUser || existingUser1) {
-                return res.status(400).json({ message: "Username already exists" });
+                return res.status(400).json({ message: "Username already exists",success:false });
             }
 
             const { username, password, email, age, country } = req.body;
             if (!username || !password || !email || !age || !country) {
-                return res.status(400).json({ message: "Required fields are missing" });
+                return res.status(400).json({ message: "Required fields are missing",success:false });
             }
 
             const userData = req.body;
@@ -61,10 +61,10 @@ route.post('/createstudent',
 
             console.log("Cookie set successfully");
 
-            res.status(200).json({ message: "Account created", token });
+            res.status(200).json({ message: "Account created", token,success:true });
         } catch (error) {
             console.error(error);
-            res.status(500).json({ message: "Internal server error" });
+            res.status(500).json({ message: "Internal server error" ,success:false});
         }
     });
 
@@ -76,7 +76,7 @@ route.post('/createtutor',
     async (req, res) => {
         try {
             const errors = validationResult(req);
-
+            console.log(req.body);
             if (!errors.isEmpty()) {
                 return res.status(400).json({ message: errors.array()[0].msg });
             }
@@ -85,12 +85,12 @@ route.post('/createtutor',
             const existingUser = await tutorModel.findOne({ username: req.body.username });
 
             if (existingUser || existingUser1) {
-                return res.status(400).json({ message: "Username already exists" });
+                return res.status(400).json({ message: "Username already exists",success:false});
             }
 
             const { username, password, email, age, country } = req.body;
             if (!username || !password || !email) {
-                return res.status(400).json({ message: "Required fields are missing" });
+                return res.status(400).json({ message: "Required fields are missing",success:false });
             }
 
             const userData = req.body;
@@ -123,10 +123,10 @@ route.post('/createtutor',
 
             console.log("Cookie set successfully");
 
-            res.status(200).json({ message: "Account created", token });
+            res.status(200).json({ message: "Account created", token:token,success:true });
         } catch (error) {
             console.error(error);
-            res.status(500).json({ message: "Internal server error" });
+            res.status(500).json({ message: "Internal server error" ,success:false});
         }
     });
 
@@ -135,10 +135,11 @@ route.post('/createtutor',
     route.post('/login', async (req, res) => {
         try {
             const { username, password } = req.body;
-            console.log(req.headers.authorization);
-            // if (req.headers.authorization || req.cookies.authcookie) {
-            //     return res.status(200).json({ message: "Already logged in", success: true });
-            // }
+            console.log(req.body);
+            // console.log(req.headers.authorization);
+            if (req.headers.authorization || req.cookies.authcookie) {
+                return res.status(200).json({ message: "Already logged in", success: true });
+            }
 
             const salt = await bcrypt.genSalt(10);
             const hash = await bcrypt.hash(req.body.password, salt);
@@ -180,7 +181,7 @@ route.post('/createtutor',
     
             console.log("Cookie set successfully");
     
-            return res.status(200).json({ message: "Login successful", success: true });
+            return res.status(200).json({ message: "Login successful",role:role,token:token,existingUser,success: true });
         } catch (error) {
             console.error(error);
             return res.status(500).json({ message: "Internal server error", success: false });

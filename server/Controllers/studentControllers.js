@@ -195,6 +195,26 @@ async function mycourseget(req,res){
     }
 }
 
+async function getuser(req,res){
+    const token =  req.headers.authorization||req.cookies.authcookie;
+    // console.log(typeof token);
+    if (!token) {
+      return res.status(401).json({ error: "Unauthorized - Missing token" });
+    }
+    const decode = jwt.verify(token, process.env.SECRET_TOKEN);   
+    console.log(decode)
+    req.user = decode;
+    if(decode.role=="student"){
+        const student =await studentModel.findById(decode.id);
+        return res.status(200).json({ success: true, message: 'retrieved',student });
+    }
+    // console.log(tutor);
+    if(decode.role=="tutor"){
+        const tutor =await tutorModel.findById(decode.id);
+        return res.status(200).json({ success: true, message: 'retrieved',tutor });
+    }
+
+}
 
 
-module.exports={recommend,subscribe,joinclass,flashs,flashd,flashget,courseget,mycourseget}
+module.exports={recommend,subscribe,joinclass,flashs,flashd,flashget,courseget,mycourseget,getuser}

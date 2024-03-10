@@ -1,23 +1,66 @@
-import React, { useState } from 'react'
+import React, { useContext, useState } from 'react'
 import ReactStars from "react-rating-stars-component";
 import lang from '../constants/languages'
 import Select from 'react-select';
 import countries from '../constants/countries'
 import { useNavigate } from 'react-router-dom';
 import ROUTES from '../routes';
+import { AppContext } from '../context/AppContext';
+const backendUrl = process.env.REACT_APP_BACKEND_URL;
 
 const Signuptutor = () => {
     const navigate = useNavigate();
+    const { signEmail, signUsername, signPassword, setIsLogin, role,loginUser, getUserDetails, setLoginUser } = useContext(AppContext)
+
     const [selectedLang, setSelectedLang] = useState([])
     const [selectedValue, setSelectedValue] = useState([]);
+    const [description, setDescription] = useState('')
+    const [Age, setAge] = useState('')
+    const [Country, setCountry] = useState('')
     const handleChange = (index, selectedOption) => {
         const newValues = [...selectedValue];
         newValues[index] = { name: selectedLang[index].name, level: selectedOption };
         setSelectedValue(newValues);
-      };
+    };
 
-    const handlesubmit = ()=>{
-        navigate(ROUTES.tutordash());
+    const handlesubmit = async (e) => {
+        try {
+            e.preventDefault()
+            const response = await fetch(`${backendUrl}/auth/createtutor`, {
+                method: 'POST',
+                body: JSON.stringify({
+                    username: signUsername,
+                    password: signPassword,
+                    email: signEmail,
+                    age: Age,
+                    role: role,
+                    description:description,
+                    country: Country.name,
+                    languages_known: selectedValue,
+                }),
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Access-Control-Allow-Credentials': 'true'
+                }
+            });
+            const resp = await response.json();
+            console.log(resp);
+            if (resp.success) {
+                document.cookie = "authcookie=" + resp.token;
+                localStorage.setItem("authToken", resp.token)
+                setIsLogin(true)
+                console.log(resp.token);
+                const res = await getUserDetails(resp.token);
+                // setLoginUser(res.tutor)
+                navigate(ROUTES.tutordash());
+            }
+            else {
+                alert(resp.message)
+            }
+        } catch (err) {
+            console.log(err);
+        }
+
     }
     return (
         <>
@@ -39,6 +82,8 @@ const Signuptutor = () => {
                                     id="email"
                                     name="email"
                                     type="number"
+                                    value={Age}
+                                    onChange={(e) => { setAge(e.target.value) }}
                                     required
                                     min={5}
                                     className="block w-full rounded-md border-0 p-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
@@ -54,6 +99,8 @@ const Signuptutor = () => {
                                     id="email"
                                     name="email"
                                     type="text"
+                                    value={description}
+                                    onChange={(e)=>setDescription(e.target.value)}
                                     required
                                     min={5}
                                     className="block w-full rounded-md border-0 p-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
@@ -68,9 +115,11 @@ const Signuptutor = () => {
                             </div>
                             <div className="mt-2">
                                 <Select
-                                options={countries}
-                                getOptionLabel={(option) => option.name}
-                                getOptionValue={(option) => option.name}
+                                    options={countries}
+                                    value={Country}
+                                    onChange={setCountry}
+                                    getOptionLabel={(option) => option.name}
+                                    getOptionValue={(option) => option.name}
                                 />
                             </div>
                         </div>

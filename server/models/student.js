@@ -24,9 +24,8 @@ const studentSchema=new Schema({
         name: { type: String },
         fluency_rate: { type: Number}
     }],
-    aimtolearn: [{
-        name: { type: String },
-    }],
+    aimtolearn: [
+         { type: String }],
     "courses_taken": [
         {
             "course": { "type": mongoose.Schema.ObjectId, "ref": "course" },
