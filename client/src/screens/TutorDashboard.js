@@ -77,7 +77,8 @@ const TeacherDashboard = () => {
     { price: "$150" }
   ];
 
-  const handleSubmit =()=>{
+  const handleSubmit =(e)=>{
+    e.preventDefault();
     const Timespan = duration.map((ele) => {
       if (ele.value === 30) {
         return { "start_time": selectedDate30, "duration": ele.value };
@@ -103,7 +104,7 @@ const TeacherDashboard = () => {
       "valid_upto":validity,
       "Course_level":selectedValue,
     }
-    
+    // console.log(finalobject);
   }
   // function generateRandomColor() {
   //   // Generate random hexadecimal color code
