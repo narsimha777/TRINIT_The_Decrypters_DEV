@@ -1,4 +1,4 @@
-import { Fragment, useContext, useState } from 'react'
+import { Fragment, useContext, useEffect, useState } from 'react'
 import { Disclosure, Menu, Transition } from '@headlessui/react'
 import { Bars3Icon, BellIcon, XMarkIcon } from '@heroicons/react/24/outline'
 import logo from '../assets/linglogo.png'
@@ -11,12 +11,16 @@ function classNames(...classes) {
 }
 
 export default function Navbar() {
-    const {isLogin, setIsLogin} = useContext(AppContext)
+    const { isLogin, setIsLogin,handleLogout} = useContext(AppContext)
     const navigate = useNavigate()
-    const handleLogout = () => {
-        setIsLogin(false)
-        navigate("/")
-    }
+    
+    useEffect(() => {
+        if (localStorage.getItem("authToken")) {
+            setIsLogin(true);
+        }
+
+    }, [])
+
     return (
         <Disclosure as="nav" className="bg-gray-800 sticky top-0 z-10">
             {({ open }) => (
@@ -36,7 +40,7 @@ export default function Navbar() {
                                 </Disclosure.Button>
                             </div>
                             <div className="flex flex-1 items-center justify-center sm:items-stretch sm:justify-between">
-                                <div className="flex flex-shrink-0 items-center cursor-pointer" onClick={()=>{navigate("/")}}>
+                                <div className="flex flex-shrink-0 items-center cursor-pointer" onClick={() => { navigate("/") }}>
                                     <img
                                         className="h-8 w-auto"
                                         src={logo}
@@ -177,47 +181,47 @@ export default function Navbar() {
                                 }
                             >
                                 Dashboard
-                            </Disclosure.Button></div>:<div className="space-y-1 px-2 pb-3 pt-2">
-                                <Disclosure.Button
-                                    as="a"
-                                    href={'/'}
-                                    className={({ isActive }) =>
-                                        [
-                                            // isActive ? 'bg-gray-900 text-white' : 'text-gray-300 hover:bg-gray-700 hover:text-white',
-                                            'rounded-md px-3 py-2 text-sm font-medium'
-                                        ].join(" ")
-                                    }
-                                >
-                                    Home
-                                </Disclosure.Button>
-                                <Disclosure.Button
-                                    as="a"
-                                    href={'/login'}
-                                    className={({ isActive }) =>
-                                        [
-                                            isActive ? 'bg-gray-900 text-white' : 'text-gray-300 hover:bg-gray-700 hover:text-white',
-                                            'rounded-md px-3 py-2 text-sm font-medium'
-                                        ].join(" ")
-                                    }
-                                >
-                                    Login
-                                </Disclosure.Button>
-                                <Disclosure.Button
-                                    as="a"
-                                    href={'/signup'}
-                                    className={({ isActive }) =>
-                                        [
-                                            isActive ? 'bg-gray-900 text-white' : 'text-gray-300 hover:bg-gray-700 hover:text-white',
-                                            'rounded-md px-3 py-2 text-sm font-medium'
-                                        ].join(" ")
-                                    }
-                                >
-                                    Signup
-                                </Disclosure.Button>
-                            </div>}
-                        </Disclosure.Panel>
+                            </Disclosure.Button></div> : <div className="space-y-1 px-2 pb-3 pt-2">
+                            <Disclosure.Button
+                                as="a"
+                                href={'/'}
+                                className={({ isActive }) =>
+                                    [
+                                        // isActive ? 'bg-gray-900 text-white' : 'text-gray-300 hover:bg-gray-700 hover:text-white',
+                                        'rounded-md px-3 py-2 text-sm font-medium'
+                                    ].join(" ")
+                                }
+                            >
+                                Home
+                            </Disclosure.Button>
+                            <Disclosure.Button
+                                as="a"
+                                href={'/login'}
+                                className={({ isActive }) =>
+                                    [
+                                        isActive ? 'bg-gray-900 text-white' : 'text-gray-300 hover:bg-gray-700 hover:text-white',
+                                        'rounded-md px-3 py-2 text-sm font-medium'
+                                    ].join(" ")
+                                }
+                            >
+                                Login
+                            </Disclosure.Button>
+                            <Disclosure.Button
+                                as="a"
+                                href={'/signup'}
+                                className={({ isActive }) =>
+                                    [
+                                        isActive ? 'bg-gray-900 text-white' : 'text-gray-300 hover:bg-gray-700 hover:text-white',
+                                        'rounded-md px-3 py-2 text-sm font-medium'
+                                    ].join(" ")
+                                }
+                            >
+                                Signup
+                            </Disclosure.Button>
+                        </div>}
+                    </Disclosure.Panel>
                 </>
             )}
-                </Disclosure>
-            )
+        </Disclosure>
+    )
 }

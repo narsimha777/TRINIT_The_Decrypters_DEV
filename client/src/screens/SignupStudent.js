@@ -1,24 +1,64 @@
-import React, { useState } from 'react'
+import React, { useContext, useState } from 'react'
 import ReactStars from "react-rating-stars-component";
 import lang from '../constants/languages'
 import Select from 'react-select';
 import countries from '../constants/countries'
 import { useNavigate } from 'react-router-dom';
 import ROUTES from '../routes';
+import { AppContext } from '../context/AppContext';
 
 const Signupstudent = () => {
     const navigate = useNavigate()
     const [selectedLang, setSelectedLang] = useState([])
+    const [aimLearn, setAimLearn] = useState([])
+    const { signEmail, signUsername, signPassword,setIsLogin,role,getUserDetails, setLoginUser} = useContext(AppContext)
+    const [Age, setAge] = useState('')
+    const [Country, setCountry] = useState('')
     const [ratings, setRatings] = useState([]);
+    const backendUrl = process.env.REACT_APP_BACKEND_URL;
 
     const handleRatingChange = (index, rating) => {
         const newRatings = [...ratings];
-        newRatings[index] = { name: selectedLang[index].name, rating: rating };
+        newRatings[index] = { name: selectedLang[index].name, fluency_rate: rating };
         setRatings(newRatings);
     };
 
-    const handleSubmit= ()=>{
-        navigate(ROUTES.studentdash());
+    const handleSubmit = async (e) => {
+        try {
+            e.preventDefault()
+            const response = await fetch(`${backendUrl}/auth/createstudent`, {
+                method: 'POST',
+                body: JSON.stringify({
+                    username: signUsername,
+                    password: signPassword,
+                    email: signEmail,
+                    age: Age,
+                    role:role,
+                    country: Country.name,
+                    languages: ratings,
+                    aimtolearn: aimLearn.map((e)=>{return e.name})
+                }),
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Access-Control-Allow-Credentials': 'true'
+                }
+            });
+            const resp = await response.json();
+            console.log(resp);
+            if (resp.success) {
+                document.cookie = "authcookie="+resp.token;
+                localStorage.setItem("authToken",resp.token)
+                setIsLogin(true)
+                const res = await getUserDetails(resp.token);
+                setLoginUser(res)
+                navigate(ROUTES.studentdash());
+            }
+            else {
+                alert(resp.message)
+            }
+        } catch (err) {
+            console.log(err);
+        }
     }
     return (
         <>
@@ -41,6 +81,8 @@ const Signupstudent = () => {
                                     name="email"
                                     type="number"
                                     required
+                                    value={Age}
+                                    onChange={(e) => { setAge(e.target.value) }}
                                     min={5}
                                     className="block w-full rounded-md border-0 p-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                                 />
@@ -55,9 +97,11 @@ const Signupstudent = () => {
                             </div>
                             <div className="mt-2">
                                 <Select
-                                options={countries}
-                                getOptionLabel={(option) => option.name}
-                                getOptionValue={(option) => option.name}
+                                    options={countries}
+                                    value={Country}
+                                    onChange={setCountry}
+                                    getOptionLabel={(option) => option.name}
+                                    getOptionValue={(option) => option.name}
                                 />
                             </div>
                         </div>
@@ -101,6 +145,27 @@ const Signupstudent = () => {
                                     />
                                 </div>
                             ))}
+                        </div>
+                        <div>
+
+                            <label htmlFor="langs" className="block text-sm font-medium leading-6 text-white">
+                                Which Languages you want to learn?
+                            </label>
+                            <Select
+                                defaultValue={[]}
+                                isMulti
+                                id='langs'
+                                name="colors"
+                                options={lang}
+                                value={aimLearn}
+                                onChange={setAimLearn}
+                                isOptionDisabled={() => aimLearn.length >= 5}
+                                getOptionLabel={(option) => option.name}
+                                getOptionValue={(option) => option.name}
+                                className="basic-multi-select mt-2"
+                                placeholder="Select Languages"
+                                classNamePrefix="select"
+                            />
                         </div>
                         <div>
                             <button

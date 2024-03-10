@@ -4,16 +4,44 @@ import image from '../assets/loginbg.jpg';
 import { NavLink, useNavigate } from 'react-router-dom';
 import ROUTES from '../routes';
 import { AppContext } from '../context/AppContext';
+
 const Login = () => {
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
   const navigate = useNavigate()
-  const {isLogin,setIsLogin} = useContext(AppContext)
+  const { isLogin, setIsLogin,currRole,setCurrRole, setLoginUser } = useContext(AppContext)
+  const backendUrl = process.env.REACT_APP_BACKEND_URL;
 
-  const handleSubmit = (event) => {
-    event.preventDefault()
-    setIsLogin(true)
-    navigate('/')
+  const handleSubmit = async (event) => {
+    try {
+      event.preventDefault()
+      const response = await fetch(`${backendUrl}/auth/login`, {
+        method: 'POST',
+        body: JSON.stringify({
+          username: email,
+          password :password
+        }),
+        headers:{
+          'Content-Type':'application/json',
+          'Access-Control-Allow-Credentials':'true'
+        }
+      });
+      const resp = await response.json();
+      console.log(resp);
+      if (resp.success) {
+        setIsLogin(true)
+        setCurrRole(resp.role);
+        setLoginUser(resp.existingUser)
+        localStorage.getItem("authToken",resp.token)
+        navigate(`/dashboard/${resp.role}`)
+      }
+      else {
+        alert("LOGIN Failed")
+      }
+
+    } catch (error) {
+      console.log(error);
+    }
   }
   return (
     <div className="flex min-h-screen items-center justify-center bg-cover bg-gray-900">
@@ -25,11 +53,11 @@ const Login = () => {
         <form onSubmit={handleSubmit} className="mt-8 space-y-4">
           <div>
             <label htmlFor="email" className="block text-gray-200 text-sm font-bold mb-2">
-              Email
+              Username
             </label>
             <input
               id="email"
-              type="email"
+              type="text"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-900 focus:outline-none focus:ring focus:ring-indigo-500 focus:ring-opacity-50"

@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useContext } from "react";
 import Select from 'react-select';
 import { Datepicker } from "@mobiscroll/react";
 import { Progress } from '@material-tailwind/react';
@@ -6,6 +6,7 @@ import TeacherProfile from "./Teacherprofile"; // Assuming TeacherProfile compon
 import '@mobiscroll/react/dist/css/mobiscroll.min.css';
 import { Eventcalendar, getJson, setOptions } from '@mobiscroll/react';
 import { useEffect, useMemo, useState } from 'react';
+import { AppContext } from "../context/AppContext";
 
 setOptions({
     theme: 'ios',
@@ -13,7 +14,6 @@ setOptions({
   });
 
 const TeacherDashboard = () => {
-    const role = 'tutor';
     const [duration, setDuration] = useState([]);
     const [selectedDate30, setSelectedDate30] = useState(null);
     const [selectedDate60, setSelectedDate60] = useState(null);
@@ -22,6 +22,8 @@ const TeacherDashboard = () => {
     const [description, setDescription] = useState();
     const [coursename, setCoursename] = useState('');
     const [prices, setPrice] = useState({});
+    const { signEmail, signUsername, signPassword,setIsLogin,role,getUserDetails,loginUser,setLoginUser} = useContext(AppContext)
+
     const durations = [{"value":30},{"value":60},{"value":90}] 
     const handleDateChange30 = (event) => {
       setSelectedDate30(event.value);
@@ -37,27 +39,6 @@ const TeacherDashboard = () => {
         const end = new Date(start.getTime() + duration * 60000); // Convert minutes to milliseconds
         return end.toISOString(); // Convert to ISO string format
       }
-  const profile = {
-    username: "TutorJane",
-    password: "hashedPassword456",
-    email: "tutor.jane@example.com",
-    languages_known: [
-      { name: "Spanish", level: "B2", trial_price: 90 },
-      { name: "German", level: "A2", trial_price: 75 },
-    ],
-    role: "tutor",
-    availability: [
-      { start: "2024-03-09T10:00:00.000Z",  "duration": 60 ,title:"GermanClass"},
-      { start: "2024-03-09T14:00:00.000Z",  "duration": 45 ,title:""},
-    ],
-    age: 28,
-    experience: "Intermediate",
-    courses_taking: ["course3", "course4"],
-    rating: 4.2,
-    description: "Passionate tutor in Spanish and German languages.",
-    noofcourses: 2,
-    country: "Canada",
-  };
 
   const lang = [
     { name: "English", code: "en" },
@@ -135,15 +116,15 @@ const TeacherDashboard = () => {
     [],
   );
   const myResources = useMemo(() => {
-    return profile.languages_known.map((ele, ind) => ({
+    return loginUser.languages_known.map((ele, ind) => ({
       id: ind,
       name: ele.name,
       color: '#FF0000'
     }));
-  }, [profile.languages_known]);
+  }, [loginUser.languages_known]);
 
   useEffect(() => {
-    const e = profile.availability.map((ele,ind)=>({
+    const e = loginUser.availability.map((ele,ind)=>({
         id:ind,
         resource:ind,
         start:ele.start,
@@ -277,7 +258,7 @@ const TeacherDashboard = () => {
 
                       </div>}
 
-            {!profile.availability&&<div className="flex justify-between mt-4 items-center bg-gray-200 p-4 rounded-lg">
+            {!loginUser.availability&&<div className="flex justify-between mt-4 items-center bg-gray-200 p-4 rounded-lg">
               <p className="text-lg text-gray-700">No upcoming lessons scheduled.</p>
             </div>}
           </div>
@@ -306,16 +287,16 @@ const TeacherDashboard = () => {
           <h2 className="text-xl font-semibold text-gray-800 mb-4">Languages Known</h2>
           <div className="flex flex-col sm:flex-row items-center justify-around mb-8">
             {/* Language filter */}
-            {profile.languages_known.map((ele)=>(<div className="p-5 rounded-lg bg-gray-100"><div><b>{ele.name}</b></div><div><em>Course-level:</em> {ele.level}</div></div>))}
+            {loginUser.languages_known.map((ele)=>(<div className="p-5 rounded-lg bg-gray-100"><div><b>{ele.name}</b></div><div><em>Course-level:</em> {ele.level}</div></div>))}
           </div>
-          <h2 className="text-xl font-semibold text-gray-800 mb-4">Courses Taking ]</h2>
+          <h2 className="text-xl font-semibold text-gray-800 mb-4">Courses Taking</h2>
           <div className="flex flex-col sm:flex-row items-center justify-around mb-8">
             
           </div>
 
           {/* Display Teacher Profile */}
           <h2 className="text-xl font-semibold text-gray-800 mb-4">Teacher Profile</h2>
-          <TeacherProfile profile={profile} />
+          <TeacherProfile profile={loginUser} />
         </div>
       </div>
     </>
