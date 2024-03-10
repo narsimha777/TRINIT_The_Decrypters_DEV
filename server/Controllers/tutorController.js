@@ -34,9 +34,19 @@ async function gettut(req, res) {
         });
         
 
-        return res.status(200).json(tutors);
+        return res.status(200).json({success:true,tutors});
 
     } catch (error){
+        console.error(error);
+        res.status(500).send("Internal server error");
+    }
+}
+async function getall(req,res){
+    try {
+       const tutor=await tutorModel.find({});
+       return res.status(200).json({success:true,tutor});
+
+    } catch (error) {
         console.error(error);
         res.status(500).send("Internal server error");
     }
@@ -92,4 +102,4 @@ async function getlang(req,res){
    }
 }
 
-module.exports = { gettut,postcourse,getlang};
+module.exports = { gettut,postcourse,getlang,getall};

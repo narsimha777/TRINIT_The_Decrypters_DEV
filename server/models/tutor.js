@@ -19,7 +19,7 @@ const tutorSchema = new Schema({
     languages_known: [{
         name: { type: String, required: true },
         level: { type: String, enum: ["A1", "A2", "B1", "B2", "C1", "C2"], required: true },
-        trial_price: { type: Number, required: true }
+        trial_price: { type: Number }
     }],
     role: {
         type: String,
@@ -32,7 +32,7 @@ const tutorSchema = new Schema({
         }
     ],
     age: { type: Number },
-    experience: { type: String, enum: ["Beginner", "Intermediate", "Advanced"], required: true },
+    experience: { type: String, enum: ["Beginner", "Intermediate", "Advanced"] },
     courses_taking: [{ type: mongoose.Schema.ObjectId, ref: "course" }],
     rating: { type: Number, default: 0 },
     description: { type: String },
