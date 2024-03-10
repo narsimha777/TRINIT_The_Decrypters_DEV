@@ -18,19 +18,20 @@ const AppProvider = ({ children }) => {
     navigate("/")
   }
   const getUserDetails = async (token)=>{
+    const tok = token||localStorage.getItem("authToken");
     try {
       const response = await fetch(`${backendUrl}/student/getuser`, {
         method: 'GET',
         headers:{
           'Content-Type':'application/json',
           'Access-Control-Allow-Credentials':'true',
-          'authorization':token
+          'authorization':tok
         }
       });
       const resp = await response.json();
+      console.log(resp);
       if(resp.success){
         setLoginUser(resp.tutor)
-        return resp;
       }
     } catch (error) {
       console.log(error);

@@ -11,7 +11,7 @@ function classNames(...classes) {
 }
 
 export default function Navbar() {
-    const { isLogin, setIsLogin,handleLogout} = useContext(AppContext)
+    const { isLogin, setIsLogin,handleLogout,currRole} = useContext(AppContext)
     const navigate = useNavigate()
     
     useEffect(() => {
@@ -51,7 +51,7 @@ export default function Navbar() {
                                 <div className="hidden sm:ml-6 sm:block">
                                     {isLogin ? <div className="flex space-x-4">
                                         <NavLink
-                                            to={'/dashboard/student'}
+                                            to={`/dashboard/${currRole}`}
                                             className={({ isActive }) =>
                                                 [
                                                     isActive ? 'bg-gray-900 text-white' : 'text-gray-300 hover:bg-gray-700 hover:text-white',
@@ -134,7 +134,7 @@ export default function Navbar() {
                                             <Menu.Item>
                                                 {({ active }) => (
                                                     <Link
-                                                        to="/dashboard/student"
+                                                        to={`/dashboard/${currRole}`}
                                                         className={classNames(active ? 'bg-gray-100' : '', 'block px-4 py-2 text-sm text-gray-700')}
                                                     >
                                                         Your Profile

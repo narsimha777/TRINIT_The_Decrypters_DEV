@@ -1,8 +1,10 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import ReactStars from "react-rating-stars-component";
 import { Progress } from '@material-tailwind/react';
+import { useNavigate } from 'react-router-dom';
 
 const StudentDashboard = () => {
+  const navigate=  useNavigate();
   const classes = [{
     "tutor": "611f1675c2b78c47d86d4a1a", // Replace with a valid ObjectId for the tutor
     "course_name": "English 101",
@@ -65,6 +67,11 @@ const StudentDashboard = () => {
     return currentTime >= classStartTime && currentTime <= classEndTime;
   };
   // Function to handle filter changes
+  useEffect(() => {
+    if(!localStorage.getItem('authToken')){
+      navigate('/login')
+    }
+  }, [])
   
 
   // Placeholder function to handle search based on filters

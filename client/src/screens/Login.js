@@ -32,7 +32,7 @@ const Login = () => {
         setIsLogin(true)
         setCurrRole(resp.role);
         setLoginUser(resp.existingUser)
-        localStorage.getItem("authToken",resp.token)
+        localStorage.setItem("authToken",resp.token)
         navigate(`/dashboard/${resp.role}`)
       }
       else {
